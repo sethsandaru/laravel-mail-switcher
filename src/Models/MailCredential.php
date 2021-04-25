@@ -25,7 +25,7 @@ use SethPhat\MailSwitcher\Database\Factories\MailSwitcherCredentialFactory;
 class MailCredential extends Model
 {
     use HasFactory;
-    public static ?MailCredential $currentInstance;
+    public static ?MailCredential $currentInstance = null;
 
     const THRESHOLD_TYPE_DAILY = 'daily';
     const THRESHOLD_TYPE_WEEKLY = 'weekly';
@@ -50,19 +50,28 @@ class MailCredential extends Model
      */
     public static function getAvailableCredential(): ?MailCredential
     {
-        // if cached => prefer to use the cached credental
-        if (static::$currentInstance) {
+        // if cached => prefer to use the cached credential
+        if (!is_null(static::$currentInstance)) {
+
+            // if out of usage
             if (static::$currentInstance->usageLeft === 0) {
                 // need to retrieve the new one
                 static::$currentInstance = null;
                 return static::getAvailableCredential();
             }
+
+            return static::$currentInstance;
         }
 
-        return static::$currentInstance = MailCredential::query()
-            ->whereColumn('current_threshold', '<', 'threshold')
+        static::$currentInstance = MailCredential::available()
             ->orderBy('current_threshold', 'DESC')
             ->first();
+        return static::$currentInstance;
+    }
+
+    public function scopeAvailable(Builder $query): Builder
+    {
+        return $query->whereColumn('current_threshold', '<', 'threshold');
     }
 
     public function scopeType(Builder $query, string $type): Builder
@@ -72,6 +81,7 @@ class MailCredential extends Model
 
     public function getUsageLeftAttribute(): int
     {
+        $this->refresh();
         return $this->threshold - $this->current_threshold;
     }
 

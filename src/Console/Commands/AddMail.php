@@ -31,6 +31,10 @@ class AddMail extends Command
                 'question' => 'Email Threshold (Per Month) (Default: 1000)',
                 'default' => 1000
             ],
+            'threshold_type' => [
+                'question' => 'Threshold Type (daily/weekly/monthly) (Default: monthly)',
+                'default' => MailCredential::THRESHOLD_TYPE_MONTHLY
+            ],
         ];
 
         $payload = [];

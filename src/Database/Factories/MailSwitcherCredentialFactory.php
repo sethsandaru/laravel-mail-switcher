@@ -16,9 +16,11 @@ class MailSwitcherCredentialFactory extends Factory
             'email' => $this->faker->email,
             'password' => $this->faker->password,
             'server' => $this->faker->ipv4,
-            'host' => 25,
-            'encryption' => 'TLS',
-            'threshold' => $this->faker->numberBetween(1, 99)
+            'port' => 25,
+            'encryption' => 'tls',
+            'threshold' => $this->faker->numberBetween(1, 99),
+            'current_threshold' => 0,
+            'threshold_type' => MailCredential::THRESHOLD_TYPE_MONTHLY,
         ];
     }
 }

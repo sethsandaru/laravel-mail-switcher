@@ -2,6 +2,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use SethPhat\MailSwitcher\Models\MailCredential;
 
 class CreateMailSwitcherCredentialsTable extends Migration
 {
@@ -21,7 +22,7 @@ class CreateMailSwitcherCredentialsTable extends Migration
                 'daily',
                 'weekly',
                 'monthly'
-            ]);
+            ])->default(MailCredential::THRESHOLD_TYPE_MONTHLY);
 
             $table->timestamps();
         });
