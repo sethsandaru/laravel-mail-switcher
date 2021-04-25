@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use SethPhat\MailSwitcher\Console\Commands\AddMail;
 use SethPhat\MailSwitcher\Console\Commands\ListMail;
+use SethPhat\MailSwitcher\Console\Commands\ResetThreshold;
 use SethPhat\MailSwitcher\Listeners\IncreaseCurrentUsageAfterSentEmail;
 use SethPhat\MailSwitcher\Listeners\OverwriteMailSMTPCredential;
 
@@ -25,6 +26,7 @@ class ServiceProvider extends BaseServiceProvider
         $this->commands([
             ListMail::class,
             AddMail::class,
+            ResetThreshold::class,
         ]);
 
         Event::listen(MessageSending::class, OverwriteMailSMTPCredential::class);

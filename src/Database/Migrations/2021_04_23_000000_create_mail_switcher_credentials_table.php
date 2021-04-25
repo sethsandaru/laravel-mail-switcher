@@ -23,6 +23,7 @@ class CreateMailSwitcherCredentialsTable extends Migration
                 'weekly',
                 'monthly'
             ])->default(MailCredential::THRESHOLD_TYPE_MONTHLY);
+            $table->timestamp('threshold_start')->nullable();
 
             $table->timestamps();
         });

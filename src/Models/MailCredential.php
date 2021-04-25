@@ -4,6 +4,7 @@
 namespace SethPhat\MailSwitcher\Models;
 
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +21,8 @@ use SethPhat\MailSwitcher\Database\Factories\MailSwitcherCredentialFactory;
  * @property string $server
  * @property string $port
  * @property string $encryption
+ * @property string $threshold_type
+ * @property Carbon $threshold_start
  * @property int $usageLeft
  */
 class MailCredential extends Model
@@ -41,6 +44,10 @@ class MailCredential extends Model
         'threshold',
         'current_threshold',
         'threshold_type',
+    ];
+
+    protected $casts = [
+        'threshold_start' => 'datetime'
     ];
 
     /**
@@ -74,15 +81,35 @@ class MailCredential extends Model
         return $query->whereColumn('current_threshold', '<', 'threshold');
     }
 
-    public function scopeType(Builder $query, string $type): Builder
-    {
-        return $query->where('threshold_type', $type);
-    }
-
     public function getUsageLeftAttribute(): int
     {
         $this->refresh();
         return $this->threshold - $this->current_threshold;
+    }
+
+    public function getIsAvailableToClearThresholdAttribute(): bool
+    {
+        if ($this->threshold_start) {
+            $cNow = now();
+
+            switch ($this->threshold_type) {
+                case MailCredential::THRESHOLD_TYPE_DAILY:
+                    $nextThreshold = $this->threshold_start->addDay();
+                    break;
+
+                case MailCredential::THRESHOLD_TYPE_WEEKLY:
+                    $nextThreshold = $this->threshold_start->addDays(7);
+                    break;
+
+                case MailCredential::THRESHOLD_TYPE_MONTHLY:
+                default:
+                    $nextThreshold = $this->threshold_start->addDays(31);
+            }
+
+            return $cNow->greaterThanOrEqualTo($nextThreshold);
+        }
+
+        return false;
     }
 
     protected static function newFactory()

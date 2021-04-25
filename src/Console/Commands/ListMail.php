@@ -28,11 +28,12 @@ class ListMail extends Command
 
         $mailCredentials = $query->get();
 
-        $headers = ['ID', 'Email / Host', 'Threshold', 'Current Usage'];
+        $headers = ['ID', 'Email / Host', 'Threshold Type', 'Threshold', 'Current Usage'];
         $rows = $mailCredentials->map(function ($mailCredential) {
             return [
                 $mailCredential->id,
                 $mailCredential->email . ' / ' . $mailCredential->server,
+                $mailCredential->threshold_type,
                 $mailCredential->threshold,
                 $mailCredential->current_threshold,
             ];

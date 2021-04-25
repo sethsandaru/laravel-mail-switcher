@@ -44,6 +44,50 @@ Coming soon (this below is just a prototype, I haven't released anything yet)
 composer require sethsandaru/laravel-mail-switcher
 ```
 
+## Usage
+Laravel Mail Switcher doesn't need a GUI to work with. We will do all the stuff in Artisan Console.
+
+### List All Emails
+```
+php artisan ms:list
+```
+
+Note: You can add **--force** to show all Credentials (even the exceeded usage credentials)
+
+### Add Email Credential
+```
+php artisan ms:add
+```
+
+You will see some questions that need your answers in order to add. Follow the instruction!!
+
+### Delete an Credential
+```
+php artisan ms:delete {credentialId}
+```
+
+### Reset Threshold of expired Credentials
+```
+php artisan ms:reset
+```
+
+Like, your email credential is `daily` usage and exceeded yesterday. So, today we're gonna recover it to use it again.
+
+## Cronjob Setup
+By default, I will let you configure the Cron Job / Task Scheduling in your `Kernal.php`
+
+Best practice should be daily check at 00:00
+
+```php
+$schedule->command('ms:reset')->dailyAt("00:00");
+```
+
+or every minute:
+
+```php
+$schedule->command('ms:reset')->everyMinute();
+```
+
 ## Improve this library?
 
 Feel free to fork it and send me the PR, I'll happily review it and merge it (if it's totally make sense of course).
