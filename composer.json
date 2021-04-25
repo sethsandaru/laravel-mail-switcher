@@ -1,0 +1,50 @@
+{
+    "name": "sethsandaru/laravel-mail-switcher",
+    "type": "library",
+    "description": "Laravel Mail Switcher for Budget Laravel Application",
+    "keywords": [
+        "laravel",
+        "laravel package development skeleton",
+        "starter project for laravel package development"
+    ],
+    "authors": [
+        {
+            "name": "Phat Tran (Seth Phat)",
+            "email": "phattranminh96@gmail.com",
+            "homepage": "https://sethphat.com",
+            "role": "Sr. Full-Stack Engineer"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.4",
+        "laravel/framework": "^8"
+    },
+    "require-dev": {
+        "fakerphp/faker": "^1.9.1",
+        "mockery/mockery": "^1.4.2",
+        "phpunit/phpunit": "^9.3.3"
+    },
+    "extra": {
+        "laravel": {
+             "providers": [
+				"SethPhat\\MailSwitcher\\ServiceProvider"
+			],
+            "alias": {
+                "MailSwitcher": "\\SethPhat\\MailSwitcher\\Facade"
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "SethPhat\\MailSwitcher\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SethPhat\\MailSwitcher\\Test\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

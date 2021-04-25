@@ -1,0 +1,1 @@
+C:37:"PHPUnit\Runner\DefaultTestResultCache":326:{a:2:{s:7:"defects";a:1:{s:126:"SethPhat\MailSwitcher\Test\Unit\Listeners\OverwriteMailSMTPCredentialTest::testEmailCredentialOverwroteFromLaravelSuccessfully";i:4;}s:5:"times";a:1:{s:126:"SethPhat\MailSwitcher\Test\Unit\Listeners\OverwriteMailSMTPCredentialTest::testEmailCredentialOverwroteFromLaravelSuccessfully";d:0.003;}}}
