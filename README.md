@@ -1,5 +1,7 @@
 # Laravel Mail Switcher
 
+[![codecov](https://codecov.io/gh/sethsandaru/laravel-mail-switcher/branch/master/graph/badge.svg?token=S1GSHCQB55)](https://codecov.io/gh/sethsandaru/laravel-mail-switcher)
+
 Laravel Mail Credentials Switcher is a library which helps you to:
 
 - Manage your Mail Service Credentials
