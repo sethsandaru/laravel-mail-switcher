@@ -27,7 +27,6 @@ jobs:
                 run: |
                     php -v
                     composer install --no-interaction
-                    php artisan --env=testing key:generate
                     touch coverage.xml
 
             -   name: PHPUnit tests with coverage
