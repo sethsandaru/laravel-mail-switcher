@@ -1,15 +1,14 @@
 <?php
 
 
-namespace SethPhat\MailSwitcher\Test\Unit\Listeners;
+namespace SethPhat\MailSwitcher\Tests\Unit\Listeners;
 
 
 use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Support\Facades\Event;
 use SethPhat\MailSwitcher\Listeners\OverwriteMailSMTPCredential;
 use SethPhat\MailSwitcher\Models\MailCredential;
-use Tests\TestCase;
-
+use SethPhat\MailSwitcher\Tests\TestCase;
 
 /**
  * Class OverwriteMailSMTPCredentialTest
@@ -17,6 +16,11 @@ use Tests\TestCase;
  */
 class OverwriteMailSMTPCredentialTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->event = app(Event::class);
+    }
 
     public function testEmailCredentialOverwroteFromLaravelSuccessfully()
     {

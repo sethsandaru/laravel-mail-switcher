@@ -14,8 +14,14 @@ class CreateMailSwitcherCredentialsTable extends Migration
             $table->string('server');
             $table->string('port');
             $table->string('encryption');
+
             $table->integer('threshold');
             $table->integer('current_threshold')->default(0);
+            $table->enum('threshold_type', [
+                'daily',
+                'weekly',
+                'monthly'
+            ]);
 
             $table->timestamps();
         });
