@@ -3,15 +3,15 @@
     "type": "library",
     "description": "Laravel Mail Switcher for Budget Laravel Application",
     "keywords": [
-        "laravel",
-        "laravel package development skeleton",
-        "starter project for laravel package development"
+        "laravel library",
+        "laravel mail switcher",
+        "laravel switching email credentials to send out emails"
     ],
     "authors": [
         {
             "name": "Phat Tran (Seth Phat)",
             "email": "phattranminh96@gmail.com",
-            "homepage": "https://sethphat.com",
+            "homepage": "https://github.com/sethsandaru",
             "role": "Sr. Full-Stack Engineer"
         }
     ],

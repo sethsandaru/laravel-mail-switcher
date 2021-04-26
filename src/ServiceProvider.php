@@ -8,6 +8,7 @@ use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use SethPhat\MailSwitcher\Console\Commands\AddMail;
+use SethPhat\MailSwitcher\Console\Commands\DeleteMail;
 use SethPhat\MailSwitcher\Console\Commands\ListMail;
 use SethPhat\MailSwitcher\Console\Commands\ResetThreshold;
 use SethPhat\MailSwitcher\Listeners\IncreaseCurrentUsageAfterSentEmail;
@@ -26,6 +27,7 @@ class ServiceProvider extends BaseServiceProvider
         $this->commands([
             ListMail::class,
             AddMail::class,
+            DeleteMail::class,
             ResetThreshold::class,
         ]);
 
