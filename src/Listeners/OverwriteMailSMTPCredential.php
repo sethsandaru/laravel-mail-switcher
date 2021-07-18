@@ -16,9 +16,9 @@ class OverwriteMailSMTPCredential
      */
     protected $app;
 
-    public function __construct()
+    public function __construct(MailManager $mailManager)
     {
-        $this->app = app(MailManager::class);
+        $this->app = $mailManager;
     }
 
     /**

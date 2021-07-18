@@ -53,7 +53,7 @@ class OverwriteMailSMTPCredentialTest extends TestCase
         $mailCredential = MailCredential::factory()->create();
 
         event(new MessageSending(new \Swift_Message, []));
-        (new OverwriteMailSMTPCredential())
+        (new OverwriteMailSMTPCredential($this->mailManager))
             ->handle(
                 new MessageSending(new \Swift_Message, [])
             );
@@ -81,7 +81,8 @@ class OverwriteMailSMTPCredentialTest extends TestCase
 
         Event::fake();
         event(new MessageSending(new \Swift_Message, []));
-        (new OverwriteMailSMTPCredential())
+
+        (new OverwriteMailSMTPCredential($this->mailManager))
             ->handle(
                 new MessageSending(new \Swift_Message, [])
             );

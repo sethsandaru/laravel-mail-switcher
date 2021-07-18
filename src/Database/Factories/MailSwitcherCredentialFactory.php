@@ -21,6 +21,7 @@ class MailSwitcherCredentialFactory extends Factory
             'threshold' => $this->faker->numberBetween(1, 99),
             'current_threshold' => 0,
             'threshold_type' => MailCredential::THRESHOLD_TYPE_MONTHLY,
+            'driver' => 'smtp',
         ];
     }
 }

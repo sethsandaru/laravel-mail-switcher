@@ -20,6 +20,7 @@ class MailCredentialTest extends TestCase
             'password' => $credential->password,
             'port' => $credential->port,
             'server' => $credential->server,
+            'driver' => 'smtp',
         ]);
     }
 
