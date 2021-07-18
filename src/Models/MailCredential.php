@@ -47,10 +47,11 @@ class MailCredential extends Model
         'threshold',
         'current_threshold',
         'threshold_type',
+        'driver',
     ];
 
     protected $casts = [
-        'threshold_start' => 'datetime'
+        'threshold_start' => 'datetime',
     ];
 
     /**
