@@ -34,6 +34,9 @@ class MailCredential extends Model
     const THRESHOLD_TYPE_WEEKLY = 'weekly';
     const THRESHOLD_TYPE_MONTHLY = 'monthly';
 
+    const DRIVER_SMTP = 'smtp';
+    const DRIVER_SES = 'amz-ses';
+
     protected $table = "mail_switcher_credentials";
     protected $fillable = [
         'email',

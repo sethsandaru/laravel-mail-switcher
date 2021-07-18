@@ -42,7 +42,11 @@ Coming soon for others.
 
 ## Requirement
 - Laravel 8.x
-- PHP 7.4
+- PHP 7.4 || 8.0
+
+### Available Drivers
+- SMTP
+- Amazon SES
 
 ## Installation
 ```
