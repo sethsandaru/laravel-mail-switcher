@@ -1,25 +1,17 @@
 <?php
 
-
 namespace SethPhat\MailSwitcher\Tests\Unit\Listeners;
 
-
-use Illuminate\Contracts\Mail\Mailable;
-use Illuminate\Mail\Events\MessageSending;
-use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Mail\MailManager;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Mail;
-use SethPhat\MailSwitcher\Exceptions\EmptyCredentialException;
-use SethPhat\MailSwitcher\Listeners\IncreaseCurrentUsageAfterSentEmail;
-use SethPhat\MailSwitcher\Listeners\OverwriteMailSMTPCredential;
-use SethPhat\MailSwitcher\Models\MailCredential;
-use SethPhat\MailSwitcher\Tests\Mocks\TestEmail;
 use SethPhat\MailSwitcher\Tests\TestCase;
+use Illuminate\Mail\Events\MessageSending;
+use SethPhat\MailSwitcher\Models\MailCredential;
+use SethPhat\MailSwitcher\Exceptions\EmptyCredentialException;
+use SethPhat\MailSwitcher\Listeners\OverwriteMailSMTPCredential;
 
 /**
- * Class OverwriteMailSMTPCredentialTest
- * @package SethPhat\MailSwitcher\Test\Unit\Listeners
+ * Class OverwriteMailSMTPCredentialTest.
  */
 class OverwriteMailSMTPCredentialTest extends TestCase
 {
@@ -31,7 +23,7 @@ class OverwriteMailSMTPCredentialTest extends TestCase
         $this->mailManager = app(MailManager::class);
     }
 
-    public function testClassDidListenToMailSendingEvent()
+    public function testClassDidListenToMailSendingEvent(): void
     {
         Event::fake();
 
@@ -40,22 +32,22 @@ class OverwriteMailSMTPCredentialTest extends TestCase
             OverwriteMailSMTPCredential::class
         );
 
-        event(new MessageSending(new \Swift_Message, []));
+        event(new MessageSending(new \Swift_Message(), []));
 
         // asserts
         Event::assertDispatched(MessageSending::class);
     }
 
-    public function testEmailCredentialOverwroteFromLaravelSuccessfully()
+    public function testEmailCredentialOverwroteFromLaravelSuccessfully(): void
     {
         Event::fake();
 
         $mailCredential = MailCredential::factory()->create();
 
-        event(new MessageSending(new \Swift_Message, []));
+        event(new MessageSending(new \Swift_Message(), []));
         (new OverwriteMailSMTPCredential())
             ->handle(
-                new MessageSending(new \Swift_Message, [])
+                new MessageSending(new \Swift_Message(), [])
             );
 
         // asserts
@@ -71,19 +63,19 @@ class OverwriteMailSMTPCredentialTest extends TestCase
         $this->assertSame($smtpTransport->getEncryption(), $mailCredential->encryption);
     }
 
-    public function testFailToOverwriteBecauseNoMoreCredentialThrowException()
+    public function testFailToOverwriteBecauseNoMoreCredentialThrowException(): void
     {
         $this->expectException(EmptyCredentialException::class);
         MailCredential::factory()->create([
             'threshold' => 10,
-            'current_threshold' => 10
+            'current_threshold' => 10,
         ]);
 
         Event::fake();
-        event(new MessageSending(new \Swift_Message, []));
+        event(new MessageSending(new \Swift_Message(), []));
         (new OverwriteMailSMTPCredential())
             ->handle(
-                new MessageSending(new \Swift_Message, [])
+                new MessageSending(new \Swift_Message(), [])
             );
     }
 }

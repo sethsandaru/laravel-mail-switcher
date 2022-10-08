@@ -1,16 +1,15 @@
 <?php
 
-
 namespace SethPhat\MailSwitcher\Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
 use SethPhat\MailSwitcher\Models\MailCredential;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MailSwitcherCredentialFactory extends Factory
 {
     protected $model = MailCredential::class;
 
-    public function definition()
+    public function definition(): array
     {
         return [
             'email' => $this->faker->email,

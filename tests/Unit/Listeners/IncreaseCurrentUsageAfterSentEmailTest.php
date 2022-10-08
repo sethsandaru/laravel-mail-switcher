@@ -1,18 +1,16 @@
 <?php
 
-
 namespace SethPhat\MailSwitcher\Tests\Unit\Listeners;
 
-
-use Illuminate\Mail\Events\MessageSent;
 use Illuminate\Support\Facades\Event;
-use SethPhat\MailSwitcher\Listeners\IncreaseCurrentUsageAfterSentEmail;
-use SethPhat\MailSwitcher\Models\MailCredential;
+use Illuminate\Mail\Events\MessageSent;
 use SethPhat\MailSwitcher\Tests\TestCase;
+use SethPhat\MailSwitcher\Models\MailCredential;
+use SethPhat\MailSwitcher\Listeners\IncreaseCurrentUsageAfterSentEmail;
 
 class IncreaseCurrentUsageAfterSentEmailTest extends TestCase
 {
-    public function testClassDidListenToMailSendingEvent()
+    public function testClassDidListenToMailSendingEvent(): void
     {
         Event::fake();
 
@@ -21,21 +19,21 @@ class IncreaseCurrentUsageAfterSentEmailTest extends TestCase
             IncreaseCurrentUsageAfterSentEmail::class
         );
 
-        event(new MessageSent(new \Swift_Message, []));
+        event(new MessageSent(new \Swift_Message(), []));
 
         // asserts
         Event::assertDispatched(MessageSent::class);
     }
 
-    public function testCurrentThresholdOfCredentialDidIncreaseAfterSentEmail()
+    public function testCurrentThresholdOfCredentialDidIncreaseAfterSentEmail(): void
     {
         Event::fake();
 
         $mailCredential = MailCredential::factory()->create();
 
-        event(new MessageSent(new \Swift_Message, []));
+        event(new MessageSent(new \Swift_Message(), []));
         (new IncreaseCurrentUsageAfterSentEmail())->handle(
-            new MessageSent(new \Swift_Message, [])
+            new MessageSent(new \Swift_Message(), [])
         );
 
         $mailCredential->refresh();

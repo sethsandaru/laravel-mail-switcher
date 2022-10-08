@@ -1,13 +1,14 @@
 <?php
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 use SethPhat\MailSwitcher\Models\MailCredential;
 
 class CreateMailSwitcherCredentialsTable extends Migration
 {
-
-    public function up() {
+    public function up(): void
+    {
         Schema::create('mail_switcher_credentials', function (Blueprint $table) {
             $table->id();
             $table->string('email');
@@ -21,7 +22,7 @@ class CreateMailSwitcherCredentialsTable extends Migration
             $table->enum('threshold_type', [
                 'daily',
                 'weekly',
-                'monthly'
+                'monthly',
             ])->default(MailCredential::THRESHOLD_TYPE_MONTHLY);
             $table->timestamp('threshold_start')->nullable();
 
@@ -29,7 +30,8 @@ class CreateMailSwitcherCredentialsTable extends Migration
         });
     }
 
-    public function down() {
+    public function down(): void
+    {
         Schema::dropIfExists('mail_switcher_credentials');
     }
 }

@@ -1,16 +1,14 @@
 <?php
 
-
 namespace SethPhat\MailSwitcher\Tests\Unit\Models;
 
-
 use Carbon\Carbon;
-use SethPhat\MailSwitcher\Models\MailCredential;
 use SethPhat\MailSwitcher\Tests\TestCase;
+use SethPhat\MailSwitcher\Models\MailCredential;
 
 class MailCredentialTest extends TestCase
 {
-    public function testAddNewCredentialSuccessfully()
+    public function testAddNewCredentialSuccessfully(): void
     {
         $credential = MailCredential::factory()->create();
 
@@ -23,7 +21,7 @@ class MailCredentialTest extends TestCase
         ]);
     }
 
-    public function testGetAvailableCredentialSuccessfullyAndFullyCached()
+    public function testGetAvailableCredentialSuccessfullyAndFullyCached(): void
     {
         $credential = MailCredential::factory()->create();
 
@@ -43,7 +41,7 @@ class MailCredentialTest extends TestCase
         $this->assertTrue($credential->is($cachedCredential));
     }
 
-    public function testGetAvailableCredentialCacheDataOutOfUsageAutoSwitchToNewCredential()
+    public function testGetAvailableCredentialCacheDataOutOfUsageAutoSwitchToNewCredential(): void
     {
         $credential = MailCredential::factory()->create();
 
@@ -69,7 +67,8 @@ class MailCredentialTest extends TestCase
         $this->assertFalse($availableCredential->is($newAvailableCredential));
     }
 
-    public function testUsageLeftAttribute() {
+    public function testUsageLeftAttribute(): void
+    {
         $credential = MailCredential::factory()->create();
 
         $timesLeft = $credential->threshold - $credential->current_threshold;
@@ -83,11 +82,11 @@ class MailCredentialTest extends TestCase
         $this->assertEquals(0, $credential->usageLeft);
     }
 
-    public function testTypeOfThresholdIsCarbonInstance()
+    public function testTypeOfThresholdIsCarbonInstance(): void
     {
         $credential = MailCredential::factory()->create([
             'threshold_type' => MailCredential::THRESHOLD_TYPE_DAILY,
-            'threshold_start' => now()
+            'threshold_start' => now(),
         ]);
 
         $credential->refresh();
@@ -99,11 +98,11 @@ class MailCredentialTest extends TestCase
     /**
      * @covers \SethPhat\MailSwitcher\Models\MailCredential::getIsAvailableToClearThresholdAttribute
      */
-    public function testGetAvailableCredentialThresholdToClearDaily()
+    public function testGetAvailableCredentialThresholdToClearDaily(): void
     {
         $credential = MailCredential::factory()->create([
             'threshold_type' => MailCredential::THRESHOLD_TYPE_DAILY,
-            'threshold_start' => now()
+            'threshold_start' => now(),
         ]);
 
         Carbon::setTestNow(now()->addDay()->addSecond());
@@ -114,11 +113,11 @@ class MailCredentialTest extends TestCase
     /**
      * @covers \SethPhat\MailSwitcher\Models\MailCredential::getIsAvailableToClearThresholdAttribute
      */
-    public function testGetAvailableCredentialThresholdToClearWeekly()
+    public function testGetAvailableCredentialThresholdToClearWeekly(): void
     {
         $credential = MailCredential::factory()->create([
             'threshold_type' => MailCredential::THRESHOLD_TYPE_WEEKLY,
-            'threshold_start' => now()
+            'threshold_start' => now(),
         ]);
 
         Carbon::setTestNow(now()->addDays(7));
@@ -129,11 +128,11 @@ class MailCredentialTest extends TestCase
     /**
      * @covers \SethPhat\MailSwitcher\Models\MailCredential::getIsAvailableToClearThresholdAttribute
      */
-    public function testGetAvailableCredentialThresholdToClearMonthly()
+    public function testGetAvailableCredentialThresholdToClearMonthly(): void
     {
         $credential = MailCredential::factory()->create([
             'threshold_type' => MailCredential::THRESHOLD_TYPE_MONTHLY,
-            'threshold_start' => now()
+            'threshold_start' => now(),
         ]);
 
         Carbon::setTestNow(now()->addDays(31));
@@ -144,11 +143,11 @@ class MailCredentialTest extends TestCase
     /**
      * @covers \SethPhat\MailSwitcher\Models\MailCredential::getIsAvailableToClearThresholdAttribute
      */
-    public function testGetAvailableCredentialThresholdToClearFalseBecauseHasNotStartedYet()
+    public function testGetAvailableCredentialThresholdToClearFalseBecauseHasNotStartedYet(): void
     {
         $credential = MailCredential::factory()->create([
             'threshold_type' => MailCredential::THRESHOLD_TYPE_DAILY,
-            'threshold_start' => null
+            'threshold_start' => null,
         ]);
 
         $this->assertFalse($credential->isAvailableToClearThreshold);
