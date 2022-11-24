@@ -1,18 +1,17 @@
 <?php
 
-
 namespace SethPhat\MailSwitcher\Listeners;
 
-use Illuminate\Mail\Events\MessageSending;
 use Illuminate\Mail\MailManager;
 use Illuminate\Support\Facades\Log;
-use SethPhat\MailSwitcher\Exceptions\EmptyCredentialException;
+use Illuminate\Mail\Events\MessageSending;
 use SethPhat\MailSwitcher\Models\MailCredential;
+use SethPhat\MailSwitcher\Exceptions\EmptyCredentialException;
 
 class OverwriteMailSMTPCredential
 {
     /**
-     * @var MailManager $app
+     * @var MailManager
      */
     protected $app;
 
@@ -22,9 +21,7 @@ class OverwriteMailSMTPCredential
     }
 
     /**
-     * Handle the Overwrite Process
-     *
-     * @param MessageSending $event
+     * Handle the Overwrite Process.
      */
     public function handle(MessageSending $event)
     {
