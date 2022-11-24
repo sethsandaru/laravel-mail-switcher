@@ -2,6 +2,7 @@
 
 namespace SethPhat\MailSwitcher\Tests\Unit\Listeners;
 
+use Illuminate\Mail\SentMessage;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Mail\Events\MessageSent;
 use SethPhat\MailSwitcher\Tests\TestCase;
@@ -19,7 +20,7 @@ class IncreaseCurrentUsageAfterSentEmailTest extends TestCase
             IncreaseCurrentUsageAfterSentEmail::class
         );
 
-        event(new MessageSent(new \Swift_Message(), []));
+        event(new MessageSent($this->createMock(SentMessage::class), []));
 
         // asserts
         Event::assertDispatched(MessageSent::class);
@@ -31,9 +32,9 @@ class IncreaseCurrentUsageAfterSentEmailTest extends TestCase
 
         $mailCredential = MailCredential::factory()->create();
 
-        event(new MessageSent(new \Swift_Message(), []));
+        event(new MessageSent($this->createMock(SentMessage::class), []));
         (new IncreaseCurrentUsageAfterSentEmail())->handle(
-            new MessageSent(new \Swift_Message(), [])
+            new MessageSent($this->createMock(SentMessage::class), [])
         );
 
         $mailCredential->refresh();
