@@ -9,6 +9,8 @@ use Illuminate\Mail\Events\MessageSending;
 use SethPhat\MailSwitcher\Models\MailCredential;
 use SethPhat\MailSwitcher\Exceptions\EmptyCredentialException;
 use SethPhat\MailSwitcher\Listeners\OverwriteMailSMTPCredential;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
+use Symfony\Component\Mime\Email;
 
 /**
  * Class OverwriteMailSMTPCredentialTest.
@@ -32,7 +34,7 @@ class OverwriteMailSMTPCredentialTest extends TestCase
             OverwriteMailSMTPCredential::class
         );
 
-        event(new MessageSending(new \Swift_Message(), []));
+        event(new MessageSending(new Email(), []));
 
         // asserts
         Event::assertDispatched(MessageSending::class);
@@ -44,23 +46,21 @@ class OverwriteMailSMTPCredentialTest extends TestCase
 
         $mailCredential = MailCredential::factory()->create();
 
-        event(new MessageSending(new \Swift_Message(), []));
+        event(new MessageSending(new Email(), []));
         (new OverwriteMailSMTPCredential())
             ->handle(
-                new MessageSending(new \Swift_Message(), [])
+                new MessageSending(new Email(), [])
             );
 
         // asserts
-        /** @var \Swift_SmtpTransport $smtpTransport */
-        $smtpTransport = $this->mailManager->mailer('smtp')
-            ->getSwiftMailer()
-            ->getTransport();
+        /** @var EsmtpTransport $smtpTransport */
+        $smtpTransport = app(MailManager::class)->mailer()->getSymfonyTransport();
 
         $this->assertSame($smtpTransport->getUsername(), $mailCredential->email);
         $this->assertSame($smtpTransport->getPassword(), $mailCredential->password);
-        $this->assertSame($smtpTransport->getHost(), $mailCredential->server);
-        $this->assertSame($smtpTransport->getPort(), $mailCredential->port);
-        $this->assertSame($smtpTransport->getEncryption(), $mailCredential->encryption);
+        $this->assertSame($smtpTransport->getStream()->getHost(), $mailCredential->server);
+        $this->assertSame($smtpTransport->getStream()->getPort(), $mailCredential->port);
+        $this->assertSame($smtpTransport->getStream()->isTls(), true);
     }
 
     public function testFailToOverwriteBecauseNoMoreCredentialThrowException(): void
@@ -72,10 +72,10 @@ class OverwriteMailSMTPCredentialTest extends TestCase
         ]);
 
         Event::fake();
-        event(new MessageSending(new \Swift_Message(), []));
+        event(new MessageSending(new Email(), []));
         (new OverwriteMailSMTPCredential())
             ->handle(
-                new MessageSending(new \Swift_Message(), [])
+                new MessageSending(new Email(), [])
             );
     }
 }

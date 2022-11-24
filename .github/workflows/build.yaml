@@ -9,36 +9,6 @@ on:
             - 'master'
 
 jobs:
-    build_php80:
-        runs-on: ubuntu-latest
-        steps:
-            -   uses: actions/checkout@v3
-                if: success()
-
-            -   name: Setup PHP with coverage driver
-                uses: shivammathur/setup-php@v2
-                with:
-                    php-version: '8.0'
-                    coverage: pcov
-
-            -   name: Setup
-                if: success()
-                run: |
-                    php -v
-                    composer install --no-interaction
-                    touch coverage.xml
-
-            -   name: PHPUnit tests with coverage
-                if: success() && github.event.pull_request.draft == false
-                run: |
-                    composer test-coverage
-
-            -   name: upload coverage to codecov.io
-                uses: codecov/codecov-action@v1
-                with:
-                    token: ${{ secrets.CODECOV_TOKEN }}
-                    file: ./coverage.xml
-
     build_php81:
         runs-on: ubuntu-latest
         steps:
@@ -57,7 +27,13 @@ jobs:
                     php -v
                     composer install --no-interaction
 
-            -   name: PHPUnit tests
+            -   name: PHPUnit tests with coverage
                 if: success() && github.event.pull_request.draft == false
                 run: |
-                    composer test
+                    composer test-coverage
+
+            -   name: upload coverage to codecov.io
+                uses: codecov/codecov-action@v1
+                with:
+                    token: ${{ secrets.CODECOV_TOKEN }}
+                    file: ./coverage.xml

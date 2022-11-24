@@ -41,8 +41,8 @@ Laravel Mail Switcher is only support for `SMTP` driver at the moment.
 Coming soon for others.
 
 ## Requirement
-- Laravel 8.x or 9.x
-- PHP 8.0 & 8.1
+- Laravel 9.x
+- PHP 8.1
 
 ## Installation
 ```

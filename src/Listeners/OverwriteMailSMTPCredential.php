@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Mail\Events\MessageSending;
 use SethPhat\MailSwitcher\Models\MailCredential;
 use SethPhat\MailSwitcher\Exceptions\EmptyCredentialException;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 
 class OverwriteMailSMTPCredential
 {
@@ -25,8 +26,6 @@ class OverwriteMailSMTPCredential
      */
     public function handle(MessageSending $event)
     {
-        /** @var \Swift_SmtpTransport $smtpTransport */
-        $smtpTransport = $this->app->mailer('smtp')->getSwiftMailer()->getTransport();
         $mailCredential = MailCredential::getAvailableCredential();
 
         if (is_null($mailCredential)) {
@@ -36,12 +35,19 @@ class OverwriteMailSMTPCredential
         // cache
         MailCredential::$currentInstance = $mailCredential;
 
-        // set
-        $smtpTransport->setUsername($mailCredential->email);
-        $smtpTransport->setPassword($mailCredential->password);
-        $smtpTransport->setEncryption($mailCredential->encryption);
-        $smtpTransport->setHost($mailCredential->server);
-        $smtpTransport->setPort($mailCredential->port);
+        /** @var EsmtpTransport $smtpTransport */
+        $smtpTransport = $this->app->createSymfonyTransport([
+            'transport' => 'smtp',
+            'encryption' => $mailCredential->encryption,
+            'host' => $mailCredential->server,
+            'port' => $mailCredential->port,
+            'username' => $mailCredential->email,
+            'password' => $mailCredential->password,
+        ]);
+
+        // set to MailManager
+        $this->app->forgetMailers();
+        $this->app->extend('smtp', fn () => $smtpTransport);
 
         Log::info("[MailSwitcher] Switched the MailCredential to: {$mailCredential->email}|{$mailCredential->server}");
     }
