@@ -42,7 +42,7 @@ Coming soon for others.
 
 ## Requirement
 - Laravel 8.x or 9.x
-- PHP 7.4, 8.0, or 8.1
+- PHP 8.0 & 8.1
 
 ## Installation
 ```
