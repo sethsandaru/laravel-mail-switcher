@@ -9,17 +9,16 @@ on:
             - 'master'
 
 jobs:
-    build:
-        runs-on: ubuntu-18.04
-
+    build_php80:
+        runs-on: ubuntu-latest
         steps:
-            -   uses: actions/checkout@v2
+            -   uses: actions/checkout@v3
                 if: success()
 
             -   name: Setup PHP with coverage driver
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: '7.4.16'
+                    php-version: '8.0'
                     coverage: pcov
 
             -   name: Setup
@@ -39,3 +38,26 @@ jobs:
                 with:
                     token: ${{ secrets.CODECOV_TOKEN }}
                     file: ./coverage.xml
+
+    build_php81:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v3
+                if: success()
+
+            -   name: Setup PHP with coverage driver
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: '8.0'
+                    coverage: pcov
+
+            -   name: Setup
+                if: success()
+                run: |
+                    php -v
+                    composer install --no-interaction
+
+            -   name: PHPUnit tests
+                if: success() && github.event.pull_request.draft == false
+                run: |
+                    composer test
